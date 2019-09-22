@@ -1,4 +1,5 @@
 #include <QApplication>
+#include "drogonclient.h"
 #include "mainwinhigh.h"
 
 int main(int argc, char *argv[]) {

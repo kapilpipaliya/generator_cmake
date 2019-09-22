@@ -13,7 +13,7 @@
 #include <QtDebug>
 #include "data.h"
 #include "treeitem.h"
-
+namespace widgets {
 ModelWriter::ModelWriter(QWidget *parent)
     : QWidget(parent), ui(new Ui::ModelWriter) {
   ui->setupUi(this);
@@ -157,3 +157,4 @@ void ModelWriter::on_toolButton_all_clicked() {
     on_treeView_doubleClicked(proxyModel->index(i, 0));
   }
 }
+}  // namespace widgets

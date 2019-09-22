@@ -3,6 +3,7 @@
 #include <QtDebug>
 #include "sqlite/orm.h"
 #include "ui_yamlgenerator.h"
+namespace widgets {
 YamlGenerator::YamlGenerator(QWidget *parent)
     : QWidget(parent), ui(new Ui::YamlGenerator) {
   ui->setupUi(this);
@@ -146,3 +147,4 @@ void YamlGenerator::on_pushButton_clicked() {
   QDesktopServices::openUrl(QUrl(
       "https://github.com/jbeder/yaml-cpp/wiki/Tutorial", QUrl::TolerantMode));
 }
+}  // namespace widgets

@@ -6,7 +6,7 @@
 namespace Ui {
 class Stl;
 }
-
+namespace widgets {
 class Stl : public QWidget
 {
     Q_OBJECT
@@ -18,5 +18,5 @@ public:
 private:
     Ui::Stl *ui;
 };
-
+}
 #endif // STL_H

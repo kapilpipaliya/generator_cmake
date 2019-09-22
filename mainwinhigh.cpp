@@ -4,7 +4,11 @@
 #include <QToolBar>
 #include "sqlite/orm.h"
 #include "sqlite_orm.h"
+#include "widgets/json/jsongenerator.h"
 #include "widgets/modelwriter/modelwriter.h"
+#include "widgets/namespace/namespacegenerator.h"
+#include "widgets/sqlcompare/sqlcompare.h"
+#include "widgets/stl/stl.h"
 #include "widgets/yaml/yamlgenerator.h"
 
 MainWinHigh::MainWinHigh(QWidget *parent) : MainWindow(parent) {
@@ -18,10 +22,46 @@ MainWinHigh::MainWinHigh(QWidget *parent) : MainWindow(parent) {
 
   auto newToolBar = new QToolBar(this);
   addToolBar(Qt::TopToolBarArea, newToolBar);
+
   auto yamlAction = new QAction("Yaml");
   newToolBar->addAction(yamlAction);
   connect(yamlAction, &QAction::triggered, [this]() {
-    auto child = new YamlGenerator();
+    auto child = new widgets::YamlGenerator();
+    addMdiChild(child);
+    child->show();
+  });
+  auto jsonAction = new QAction("Json");
+  newToolBar->addAction(jsonAction);
+  connect(jsonAction, &QAction::triggered, [this]() {
+    auto child = new widgets::JsonGenerator();
+    addMdiChild(child);
+    child->show();
+  });
+  auto drogon_model_action = new QAction("drogon model");
+  newToolBar->addAction(drogon_model_action);
+  connect(drogon_model_action, &QAction::triggered, [this]() {
+    auto child = new widgets::ModelWriter();
+    addMdiChild(child);
+    child->show();
+  });
+  auto namespaceAction = new QAction("namespace");
+  newToolBar->addAction(namespaceAction);
+  connect(namespaceAction, &QAction::triggered, [this]() {
+    auto child = new widgets::NameSpaceGenerator();
+    addMdiChild(child);
+    child->show();
+  });
+  auto sqlcompareAction = new QAction("sqlcompare");
+  newToolBar->addAction(sqlcompareAction);
+  connect(sqlcompareAction, &QAction::triggered, [this]() {
+    auto child = new widgets::SqlCompare();
+    addMdiChild(child);
+    child->show();
+  });
+  auto stlAction = new QAction("STL");
+  newToolBar->addAction(stlAction);
+  connect(stlAction, &QAction::triggered, [this]() {
+    auto child = new widgets::Stl();
     addMdiChild(child);
     child->show();
   });
@@ -44,7 +84,7 @@ void MainWinHigh::showConfigDialog() {
 }
 
 QWidget *MainWinHigh::createMdiChild() {
-  auto child = new ModelWriter(this);
+  auto child = new widgets::ModelWriter(this);
   QMdiSubWindow *subWindow = mdiArea->addSubWindow(child);
   subWindow->setWindowIcon(QIcon(":/images/copy.png"));
   subWindow->resize(1100, 800);

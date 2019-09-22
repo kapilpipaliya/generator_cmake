@@ -4,6 +4,7 @@
 #include <QAbstractItemModel>
 #include <QModelIndex>
 #include <QVariant>
+namespace widgets {
 class TreeItem;
 class Data : public QAbstractItemModel {
   Q_OBJECT
@@ -31,4 +32,5 @@ class Data : public QAbstractItemModel {
   TreeItem *rootItem;
 };
 
+}
 #endif  // DATA_H

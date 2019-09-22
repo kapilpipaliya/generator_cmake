@@ -87,6 +87,7 @@ AUX_SOURCE_DIRECTORY(./widgets/json SRC_DIR)
 AUX_SOURCE_DIRECTORY(./widgets/modelwriter SRC_DIR)
 AUX_SOURCE_DIRECTORY(./widgets/namespace SRC_DIR)
 AUX_SOURCE_DIRECTORY(./widgets/stl SRC_DIR)
+AUX_SOURCE_DIRECTORY(./widgets/sqlcompare SRC_DIR)
 AUX_SOURCE_DIRECTORY(./sqlite SRC_DIR)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})

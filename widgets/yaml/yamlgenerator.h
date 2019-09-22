@@ -10,6 +10,7 @@ class YamlGenerator;
 
 class QToolButton;
 class QPlainTextEdit;
+namespace widgets {
 class YamlGenerator : public QWidget
 {
     Q_OBJECT
@@ -38,5 +39,5 @@ signals:
 private slots:
     void on_pushButton_clicked();
 };
-
+}
 #endif // YAMLGENERATOR_H

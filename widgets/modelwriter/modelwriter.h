@@ -7,6 +7,7 @@ namespace Ui {
 class ModelWriter;
 }
 class QSortFilterProxyModel;
+namespace widgets {
 class Data;
 class ModelWriter : public QWidget
 {
@@ -27,8 +28,8 @@ private:
 private:
  void addItem(QString item);
  QString toCamelCase(QString &s);
- QSortFilterProxyModel *proxyModel;
  Data *sourceModel;
+ QSortFilterProxyModel *proxyModel;
 };
-
+}
 #endif // MODELWRITER_H

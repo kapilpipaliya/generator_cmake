@@ -3,7 +3,7 @@
 #include "treeitem.h"
 
 #include <QStringList>
-
+namespace widgets {
 Data::Data(QObject *parent) : QAbstractItemModel(parent) {
   rootItem = new TreeItem({tr("column name"), tr("type"), "isnull", "default"});
   setupModelData();
@@ -1237,3 +1237,4 @@ void Data::setupModelData() {
         author boolean DEFAULT=false NOT_NULL
     )");
 }
+}  // namespace widgets

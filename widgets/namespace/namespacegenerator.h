@@ -6,7 +6,7 @@
 namespace Ui {
 class NameSpaceGenerator;
 }
-
+namespace widgets {
 class NameSpaceGenerator : public QWidget
 {
     Q_OBJECT
@@ -18,5 +18,5 @@ public:
 private:
     Ui::NameSpaceGenerator *ui;
 };
-
+}
 #endif // NAMESPACEGENERATOR_H

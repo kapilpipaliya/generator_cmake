@@ -6,6 +6,8 @@
 namespace Ui {
 class JsonGenerator;
 }
+namespace widgets {
+
 
 class JsonGenerator : public QWidget
 {
@@ -18,5 +20,5 @@ public:
 private:
     Ui::JsonGenerator *ui;
 };
-
+}
 #endif // JSONGENERATOR_H

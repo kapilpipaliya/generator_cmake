@@ -5,6 +5,7 @@
 #include <QVector>
 
 //! [0]
+namespace widgets {
 class TreeItem
 {
 public:
@@ -26,5 +27,5 @@ private:
     TreeItem *m_parentItem;
 };
 //! [0]
-
+}
 #endif // TREEITEM_H
