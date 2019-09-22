@@ -6,8 +6,13 @@
 namespace Ui {
 class MainWindow;
 }
-class QSortFilterProxyModel;
-class Data;
+
+class QAction;
+class QMenu;
+class QMdiArea;
+class QMdiSubWindow;
+class QSignalMapper;
+class QLabel;
 
 class MainWindow : public QMainWindow {
   Q_OBJECT
@@ -15,21 +20,66 @@ class MainWindow : public QMainWindow {
  public:
   explicit MainWindow(QWidget *parent = nullptr);
   ~MainWindow();
+  QMdiArea *mdiArea;
 
- private slots:
-  void on_actionclient_triggered();
+ protected:
+  void closeEvent(QCloseEvent *event);
 
-  void on_treeView_doubleClicked(const QModelIndex &index);
-
-  void on_toolButton_all_clicked();
-  void on_lineEdit_filter_textEdited(const QString &arg1);
+ public slots:
+  virtual void newFile() {}
+  virtual void save() {}
+  virtual void about();
+  void updateMenus();
+  void updateWindowMenu();
+  virtual QWidget *createMdiChild() {}
+  void switchLayoutDirection();
+  void setActiveSubWindow(QWidget *window);
+  void showStatusMessage(QString);
 
  private:
-  Ui::MainWindow *ui;
-  void addItem(QString item);
-  QString toCamelCase(QString &s);
-  QSortFilterProxyModel *proxyModel;
-  Data *sourceModel;
+  void InitForm();
+  void createActions();
+  void createMenus();
+  void createToolBars();
+  void createStatusBar();
+  void readSettings();
+  void writeSettings();
+  QWidget *activeMdiChild();
+  QMdiSubWindow *findMdiChild(const QString &fileName);
+
+  // QMdiArea *mdiArea;
+  QSignalMapper *windowMapper;
+
+  QMenu *fileMenu;
+  QMenu *configMenu;
+  QMenu *windowMenu;
+  QMenu *helpMenu;
+
+  QToolBar *fileToolBar;
+
+  QAction *newAct;
+  QAction *saveAct;
+  QAction *exitAct;
+
+  QAction *configAct;
+
+  QAction *closeAct;
+  QAction *closeAllAct;
+  QAction *tileAct;
+  QAction *cascadeAct;
+  QAction *nextAct;
+  QAction *previousAct;
+  QAction *separatorAct;
+
+  QAction *aboutAct;
+
+ private:
+  QTimer *myTimer;
+  QLabel *dateLabel;
+  QLabel *timeLabel;
+ private slots:
+  void SetTime();
+  void activeSubWindow(QMdiSubWindow *);
 };
 
 #endif  // MAINWINDOW_H

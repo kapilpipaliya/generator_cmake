@@ -69,7 +69,7 @@ find_package(OpenSSL REQUIRED)
 #find_package(msgpack REQUIRED)
 find_package(fmt REQUIRED)
 find_package(yaml-cpp CONFIG REQUIRED)
-
+include_directories(/home/kapili3/k/cpp_stuff/vcpkg/installed/x64-linux/include/sqlite_orm)
 find_package(CAF COMPONENTS core io REQUIRED )
 #find_package(HighFive 2.0 REQUIRED)
 #https://abseil.io/docs/cpp/quickstart-cmake
@@ -78,7 +78,16 @@ find_package(CAF COMPONENTS core io REQUIRED )
 #add_subdirectory(abseil-cpp)
 #find_package(Wt REQUIRED Wt HTTP)
 
+find_package(sqlite3 CONFIG REQUIRED)
+
 AUX_SOURCE_DIRECTORY(./ SRC_DIR)
+AUX_SOURCE_DIRECTORY(./widgets SRC_DIR)
+AUX_SOURCE_DIRECTORY(./widgets/yaml SRC_DIR)
+AUX_SOURCE_DIRECTORY(./widgets/json SRC_DIR)
+AUX_SOURCE_DIRECTORY(./widgets/modelwriter SRC_DIR)
+AUX_SOURCE_DIRECTORY(./widgets/namespace SRC_DIR)
+AUX_SOURCE_DIRECTORY(./widgets/stl SRC_DIR)
+AUX_SOURCE_DIRECTORY(./sqlite SRC_DIR)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
@@ -102,4 +111,5 @@ target_link_libraries(codegen
   Qt5::Xml
   Qt5::Sql
   QCodeEditor
+  sqlite3
 )
