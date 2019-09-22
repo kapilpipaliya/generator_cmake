@@ -19,7 +19,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 SET(CMAKE_AUTOUIC ON)
-find_package(Qt5 COMPONENTS Core Gui Widgets Network Xml Sql REQUIRED)
+find_package(Qt5 COMPONENTS Core Gui Widgets Network Xml Sql WebSockets REQUIRED)
 include_directories("$ENV{HOME}/k/cpp_stuff/vcpkg/installed/x64-linux/include")
 
 set(CMAKE_CXX_STANDARD 20)
@@ -88,6 +88,7 @@ AUX_SOURCE_DIRECTORY(./widgets/modelwriter SRC_DIR)
 AUX_SOURCE_DIRECTORY(./widgets/namespace SRC_DIR)
 AUX_SOURCE_DIRECTORY(./widgets/stl SRC_DIR)
 AUX_SOURCE_DIRECTORY(./widgets/sqlcompare SRC_DIR)
+
 AUX_SOURCE_DIRECTORY(./sqlite SRC_DIR)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
@@ -111,6 +112,7 @@ target_link_libraries(codegen
   Qt5::Network
   Qt5::Xml
   Qt5::Sql
+  Qt5::WebSockets
   QCodeEditor
   sqlite3
 )

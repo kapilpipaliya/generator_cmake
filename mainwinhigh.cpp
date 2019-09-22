@@ -9,6 +9,7 @@
 #include "widgets/namespace/namespacegenerator.h"
 #include "widgets/sqlcompare/sqlcompare.h"
 #include "widgets/stl/stl.h"
+#include "widgets/wstest.h"
 #include "widgets/yaml/yamlgenerator.h"
 
 MainWinHigh::MainWinHigh(QWidget *parent) : MainWindow(parent) {
@@ -62,6 +63,13 @@ MainWinHigh::MainWinHigh(QWidget *parent) : MainWindow(parent) {
   newToolBar->addAction(stlAction);
   connect(stlAction, &QAction::triggered, [this]() {
     auto child = new widgets::Stl();
+    addMdiChild(child);
+    child->show();
+  });
+  auto wsAction = new QAction("WsTest");
+  newToolBar->addAction(wsAction);
+  connect(wsAction, &QAction::triggered, [this]() {
+    auto child = new WsTest();
     addMdiChild(child);
     child->show();
   });
