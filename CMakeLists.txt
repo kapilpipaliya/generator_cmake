@@ -79,21 +79,48 @@ find_package(CAF COMPONENTS core io REQUIRED )
 #find_package(Wt REQUIRED Wt HTTP)
 
 find_package(sqlite3 CONFIG REQUIRED)
+find_package(KF5WidgetsAddons)
+find_package(range-v3 CONFIG REQUIRED)
+#find_package(amqpcpp CONFIG REQUIRED)
 
 AUX_SOURCE_DIRECTORY(./ SRC_DIR)
 AUX_SOURCE_DIRECTORY(./widgets SRC_DIR)
 AUX_SOURCE_DIRECTORY(./widgets/yaml SRC_DIR)
-AUX_SOURCE_DIRECTORY(./widgets/json SRC_DIR)
+AUX_SOURCE_DIRECTORY(./widgets/svelte SRC_DIR)
 AUX_SOURCE_DIRECTORY(./widgets/modelwriter SRC_DIR)
-AUX_SOURCE_DIRECTORY(./widgets/namespace SRC_DIR)
+AUX_SOURCE_DIRECTORY(./widgets/dgraphcode SRC_DIR)
 AUX_SOURCE_DIRECTORY(./widgets/stl SRC_DIR)
 AUX_SOURCE_DIRECTORY(./widgets/sqlcompare SRC_DIR)
+AUX_SOURCE_DIRECTORY(./widgets/reminder SRC_DIR)
+AUX_SOURCE_DIRECTORY(./widgets/apihandler SRC_DIR)
+AUX_SOURCE_DIRECTORY(./widgets/classgenerator SRC_DIR)
+AUX_SOURCE_DIRECTORY(./widgets/bookmarks SRC_DIR)
+AUX_SOURCE_DIRECTORY(./widgets/bashrcconfig SRC_DIR)
+AUX_SOURCE_DIRECTORY(./widgets/scripter SRC_DIR)
+AUX_SOURCE_DIRECTORY(./widgets/scripter/editor SRC_DIR)
+AUX_SOURCE_DIRECTORY(./widgets/bashhistoryviewer SRC_DIR)
+AUX_SOURCE_DIRECTORY(./widgets/querybuilder SRC_DIR)
+AUX_SOURCE_DIRECTORY(./widgets/generator SRC_DIR)
+AUX_SOURCE_DIRECTORY(./widgets/protobuff SRC_DIR)
+AUX_SOURCE_DIRECTORY(./widgets/wstest SRC_DIR)
+AUX_SOURCE_DIRECTORY(./widgets/syncroute SRC_DIR)
+AUX_SOURCE_DIRECTORY(./widgets/terminal SRC_DIR)
+AUX_SOURCE_DIRECTORY(./thirdparty/pystring SRC_DIR)
+AUX_SOURCE_DIRECTORY(./thirdparty/toolwindowmanager/src  SRC_DIR)
+#add_subdirectory(./thirdparty/)
+
+
+AUX_SOURCE_DIRECTORY(./MdiMainWindow SRC_DIR)
 
 AUX_SOURCE_DIRECTORY(./sqlite SRC_DIR)
+include_directories(/home/kapili3/k/cpp_stuff/ChaiScript-develop/include)
+include_directories(/home/kapili3/k/cpp_stuff/vcpkg/installed/x64-linux/include/fplus)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-
-add_executable(codegen ${SRC_DIR} ${WSCTL_SRC} ${WSCTL_SRC_CONTEXT} ${HTTPCTL_SRC} ${ACTOR_SRC} ${FILTER_SRC} ${VIEWSRC} ${PLUGIN_SRC} ${MODEL_SRC})
+include_directories(./models)
+add_subdirectory(widgets/generator)
+set(QRC1_DIR ./widgets/scripter/editor/application.qrc)
+add_executable(codegen ${SRC_DIR} ${WSCTL_SRC} ${WSCTL_SRC_CONTEXT} ${HTTPCTL_SRC} ${ACTOR_SRC} ${FILTER_SRC} ${VIEWSRC} ${PLUGIN_SRC} ${MODEL_SRC} ${QRC1_DIR})
 add_subdirectory(QCodeEditor)
 target_link_libraries(codegen
   Threads::Threads
@@ -105,6 +132,7 @@ target_link_libraries(codegen
   Boost::filesystem
   fmt::fmt
   Boost::locale
+  KF5::WidgetsAddons
   yaml-cpp
   Qt5::Core
   Qt5::Gui
@@ -113,6 +141,13 @@ target_link_libraries(codegen
   Qt5::Xml
   Qt5::Sql
   Qt5::WebSockets
+    Boost::filesystem
   QCodeEditor
   sqlite3
+  #  amqpcpp
+  stdc++fs
+  meta concepts range-v3
+  generator
+  qtermwidget5
+
 )

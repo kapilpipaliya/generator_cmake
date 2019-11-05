@@ -24,8 +24,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>516</width>
-        <height>782</height>
+        <width>500</width>
+        <height>875</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_8">
@@ -360,6 +360,31 @@ node[node[&quot;mirror&quot;]] = node[&quot;seq&quot;];  // and strange loops :)
    <header location="global">QCodeEditor</header>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>scrollArea</tabstop>
+  <tabstop>pushButton</tabstop>
+  <tabstop>toolButton_go_1</tabstop>
+  <tabstop>toolButton_save_1</tabstop>
+  <tabstop>lineEdit_variable0</tabstop>
+  <tabstop>lineEdit_filename</tabstop>
+  <tabstop>plainTextEdit_templ_1</tabstop>
+  <tabstop>toolButton_go_2</tabstop>
+  <tabstop>toolButton_save_2</tabstop>
+  <tabstop>lineEdit_variable</tabstop>
+  <tabstop>lineEdit_yamltext</tabstop>
+  <tabstop>plainTextEdit_templ_2</tabstop>
+  <tabstop>toolButton_go_3</tabstop>
+  <tabstop>toolButton_save_3</tabstop>
+  <tabstop>plainTextEdit_templ_3</tabstop>
+  <tabstop>toolButton_go_4</tabstop>
+  <tabstop>toolButton_save_4</tabstop>
+  <tabstop>plainTextEdit_templ_4</tabstop>
+  <tabstop>toolButton_go_5</tabstop>
+  <tabstop>toolButton_save_5</tabstop>
+  <tabstop>plainTextEdit_templ_5</tabstop>
+  <tabstop>toolButton_inter_clear</tabstop>
+  <tabstop>textEdit_inter</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

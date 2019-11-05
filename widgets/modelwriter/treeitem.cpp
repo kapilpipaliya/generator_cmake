@@ -1,4 +1,4 @@
-#include "treeitem.h"
+#include "./treeitem.h"
 namespace widgets {
 //! [0]
 TreeItem::TreeItem(const QVector<QVariant> &data, TreeItem *parent)

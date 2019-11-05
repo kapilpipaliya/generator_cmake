@@ -1,4 +1,4 @@
-#include "db.h"
+#include "./db.h"
 #include <QFileInfo>
 #include <QMessageBox>
 #include <QStringList>

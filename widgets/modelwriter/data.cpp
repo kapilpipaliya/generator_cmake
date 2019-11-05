@@ -1,6 +1,6 @@
-#include "data.h"
+#include "./data.h"
 #include <QtDebug>
-#include "treeitem.h"
+#include "./treeitem.h"
 
 #include <QStringList>
 namespace widgets {

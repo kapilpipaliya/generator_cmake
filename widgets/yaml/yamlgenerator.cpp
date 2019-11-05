@@ -1,4 +1,4 @@
-#include "yamlgenerator.h"
+#include "./yamlgenerator.h"
 #include <QDesktopServices>
 #include <QtDebug>
 #include "sqlite/orm.h"
@@ -7,6 +7,7 @@ namespace widgets {
 YamlGenerator::YamlGenerator(QWidget *parent)
     : QWidget(parent), ui(new Ui::YamlGenerator) {
   ui->setupUi(this);
+  this->setAttribute(Qt::WA_DeleteOnClose);
 
   fileloadset();
   parseset();

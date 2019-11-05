@@ -117,23 +117,58 @@
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_7">
           <item>
-           <widget class="QToolButton" name="toolButton_go_2">
+           <widget class="QToolButton" name="toolButton_go_1">
             <property name="text">
-             <string>G</string>
+             <string>Get 1</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QToolButton" name="toolButton_save_2">
+           <widget class="QToolButton" name="toolButton_go_2">
             <property name="text">
-             <string>S</string>
+             <string>Get 2</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QToolButton" name="toolButton_match">
+            <property name="text">
+             <string>Match</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QToolButton" name="toolButton_go_all">
+            <property name="text">
+             <string>Get All &amp;&amp; Match</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QToolButton" name="toolButton_load">
+            <property name="text">
+             <string>Load</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QToolButton" name="toolButton_save">
+            <property name="text">
+             <string>Save</string>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QToolButton" name="toolButton_c">
             <property name="text">
-             <string>C</string>
+             <string>Columns</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QToolButton" name="toolButton_count">
+            <property name="text">
+             <string>Count</string>
             </property>
            </widget>
           </item>
@@ -210,6 +245,30 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>lineEdit_filter</tabstop>
+  <tabstop>toolButton_filter_clear</tabstop>
+  <tabstop>toolButton_all</tabstop>
+  <tabstop>treeView</tabstop>
+  <tabstop>lineEdit_db1</tabstop>
+  <tabstop>lineEdit_db2</tabstop>
+  <tabstop>lineEdit_table</tabstop>
+  <tabstop>lineEdit_columns</tabstop>
+  <tabstop>lineEdit_where</tabstop>
+  <tabstop>lineEdit_order_by</tabstop>
+  <tabstop>toolButton_go_1</tabstop>
+  <tabstop>toolButton_go_2</tabstop>
+  <tabstop>toolButton_match</tabstop>
+  <tabstop>toolButton_go_all</tabstop>
+  <tabstop>toolButton_load</tabstop>
+  <tabstop>toolButton_save</tabstop>
+  <tabstop>toolButton_c</tabstop>
+  <tabstop>toolButton_count</tabstop>
+  <tabstop>lineEdit_result_columns</tabstop>
+  <tabstop>toolButton_set</tabstop>
+  <tabstop>textEdit_1</tabstop>
+  <tabstop>textEdit_2</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

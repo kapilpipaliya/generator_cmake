@@ -1,0 +1,38 @@
+#include "./Service.h"
+
+#include <drogon/DrTemplateBase.h>
+#include <drogon/utils/Utilities.h>
+
+#include <unistd.h>
+#include <fstream>
+#include <iostream>
+#include <regex>
+#include <string>
+
+#include <sys/stat.h>
+#include <sys/types.h>
+
+static void createFilterHeaderFile(std::ofstream &file,
+                                   const std::string &className,
+                                   const std::string &fileName) {
+
+}
+
+static void createFilterSourceFile(std::ofstream &file,
+                                   const std::string &className,
+                                   const std::string &fileName) {
+
+}
+
+Service::Service(const std::vector<std::string> &controllers,
+                 const std::string &arguments)
+    : controllers(controllers), arguments(arguments) {}
+
+Service::~Service() {}
+
+std::string Service::generate() {
+
+}
+//manual_logic
+
+//end

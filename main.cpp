@@ -1,6 +1,6 @@
 #include <QApplication>
-#include "drogonclient.h"
-#include "mainwinhigh.h"
+#include "./drogonclient.h"
+#include "./mainwinhigh.h"
 
 int main(int argc, char *argv[]) {
   QApplication a(argc, argv);

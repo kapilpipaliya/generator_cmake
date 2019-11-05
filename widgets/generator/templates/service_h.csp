@@ -1,0 +1,27 @@
+#ifndef _JSCLASS_H
+#define _JSCLASS_H
+
+#include <string>
+#include <vector>
+#include "./mygenerator.h"
+
+class JSClass : public MyGenerator {
+ public:
+  JSClass(const std::vector<std::string>& controllers,
+          const std::string& arguments);
+
+  ~JSClass();
+
+  std::string generate();
+
+ private:
+  std::string _outputPath;
+
+
+//manual_logic
+
+//end
+
+};
+#endif
+
