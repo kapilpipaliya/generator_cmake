@@ -1,6 +1,6 @@
 #include "./sveltegenerator.h"
 
-#include "thirdparty/pystring/pystring.h"
+#include "pystring/pystring.hpp"
 namespace widgets {
 
 SvelteGenerator::SvelteGenerator(QWidget *parent) : QWidget(parent) {

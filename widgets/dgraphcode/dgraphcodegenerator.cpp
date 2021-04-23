@@ -1,20 +1,16 @@
 #include "./dgraphcodegenerator.h"
-
-#include <fmt/format.h>
-
+//#include <fmt/format.h>
 #include <QtWidgets>
-
-#include "thirdparty/pystring/pystring.h"
-namespace widgets {
-DgraphCodeGenerator::DgraphCodeGenerator(QWidget *parent) : QWidget(parent) {
+#include "pystring/pystring.hpp"
+namespace widgets
+{
+DgraphCodeGenerator::DgraphCodeGenerator(QWidget *parent) : QWidget(parent)
+{
   this->setAttribute(Qt::WA_DeleteOnClose);
-
   auto v1 = new QVBoxLayout(this);
-
   {
     auto g = new QGroupBox(this);
     g->setTitle("Schema Builder");
-
     auto h = new QHBoxLayout(g);
     auto v = new QVBoxLayout();
     // auto schemaLabel = new QLabel(this);
@@ -23,26 +19,20 @@ DgraphCodeGenerator::DgraphCodeGenerator(QWidget *parent) : QWidget(parent) {
     v->addWidget(schema);
     v->addWidget(inputtext);
     h->addItem(v);
-
     auto resultText = new QTextEdit(g);
     h->addWidget(resultText);
     h->setStretch(1, 2);
-
     v1->addWidget(g);
     auto generate = [schema, inputtext, resultText]() {
       auto t = inputtext->toPlainText();
       QString r;
       r = "auto dgraphorm = dgraph::DGraphClientManger::getDGraphOrm(\"1\");\n";
-      r += "auto " + schema->text() +
-           " = dgraphorm->model(dgraph::orm::Schema{\"" + schema->text() +
-           "\", {\n";
-      for (auto &l : t.split("\n")) {
+      r += "auto " + schema->text() + " = dgraphorm->model(dgraph::orm::Schema{\"" + schema->text() + "\", {\n";
+      for (auto &l : t.split("\n"))
+      {
         l.replace(" b ", ",FieldProps::builder{} ");
-
-        l.replace(QRegExp(" n (\\w*) ", Qt::CaseSensitive, QRegExp::RegExp2),
-                  ".name(\"\\1\") ");
-        l.replace(QRegExp(" m (\\w*) ", Qt::CaseSensitive, QRegExp::RegExp2),
-                  ".model(\"\\1\") ");
+        l.replace(QRegExp(" n (\\w*) ", Qt::CaseSensitive, QRegExp::RegExp2), ".name(\"\\1\") ");
+        l.replace(QRegExp(" m (\\w*) ", Qt::CaseSensitive, QRegExp::RegExp2), ".model(\"\\1\") ");
         l.replace(QRegExp(" 1 "), ".type(TypesType::INT) ");
         l.replace(QRegExp(" 2 "), ".type(TypesType::FLOAT) ");
         l.replace(QRegExp(" 3 "), ".type(TypesType::STRING) ");
@@ -75,10 +65,8 @@ DgraphCodeGenerator::DgraphCodeGenerator(QWidget *parent) : QWidget(parent) {
   }
   {
     auto g = new QGroupBox(this);
-
     auto h = new QHBoxLayout(g);
     g->setTitle("method Builder:");
-
     auto grid = new QGridLayout();
     auto schemaLabel = new QLabel(g);
     schemaLabel->setText("schema");
@@ -86,11 +74,8 @@ DgraphCodeGenerator::DgraphCodeGenerator(QWidget *parent) : QWidget(parent) {
     auto methodLabel = new QLabel(g);
     methodLabel->setText("Method");
     auto methodselect = new QComboBox(g);
-    methodselect->addItems({"eq",     "uid",       "allofterms", "anyofterms",
-                            "regexp", "anyoftext", "alloftext",  "has",
-                            "near",   "within",    "contains",   "intersects",
-                            "uid_in", "ne",        "le",         "lt",
-                            "ge",     "gt",        "match",      "type"});
+    methodselect->addItems(
+        {"eq", "uid", "allofterms", "anyofterms", "regexp", "anyoftext", "alloftext", "has", "near", "within", "contains", "intersects", "uid_in", "ne", "le", "lt", "ge", "gt", "match", "type"});
     auto fieldlabel = new QLabel(g);
     auto fieldvalue = new QLineEdit(g);
     auto inputtext = new QPlainTextEdit(g);
@@ -102,52 +87,37 @@ DgraphCodeGenerator::DgraphCodeGenerator(QWidget *parent) : QWidget(parent) {
     grid->addWidget(fieldvalue, 2, 1);
     grid->addWidget(inputtext, 3, 0, 1, 2);
     h->addItem(grid);
-
     auto resultText = new QTextEdit(g);
     h->addWidget(resultText);
     h->setStretch(1, 2);
     v1->addWidget(g);
-    auto generate = [schema, methodselect, fieldvalue, inputtext,
-                     resultText]() {
+    auto generate = [schema, methodselect, fieldvalue, inputtext, resultText]() {
       QString r;
-      r +=
-          "auto dgraphorm = dgraph::DGraphClientManger::getDGraphOrm(\"1\");\n";
-      r += "auto " + schema->text() + " = dgraphorm->newmodel(\"" +
-           schema->text() + "\");\n";
+      r += "auto dgraphorm = dgraph::DGraphClientManger::getDGraphOrm(\"1\");\n";
+      r += "auto " + schema->text() + " = dgraphorm->newmodel(\"" + schema->text() + "\");\n";
       r += "auto result = new api::Response;\n";
-
-      r += "auto status = " + schema->text() +
-           "->method(dgraph::orm::MethodsType::" + methodselect->currentText() +
-           ", " + fieldvalue->text() + ", \n\n";
-
+      r += "auto status = " + schema->text() + "->method(dgraph::orm::MethodsType::" + methodselect->currentText() + ", " + fieldvalue->text() + ", \n\n";
       auto t = inputtext->toPlainText();
       r += "dgraph::orm::Params::builder{}";
-      for (auto &l : t.split("\n")) {
+      for (auto &l : t.split("\n"))
+      {
         l.replace(" inc ", ".inc(dgraph::orm::IncludeBase::builder{} ");
-
         // QString t = "A <i>bon mot</i>.";
-        l.replace(QRegExp(" n (\\w*) ", Qt::CaseSensitive, QRegExp::RegExp2),
-                  ".name(\"\\1\") ");
-        l.replace(QRegExp(" a (\\w*) ", Qt::CaseSensitive, QRegExp::RegExp2),
-                  ".as(\"\\1\") ");
+        l.replace(QRegExp(" n (\\w*) ", Qt::CaseSensitive, QRegExp::RegExp2), ".name(\"\\1\") ");
+        l.replace(QRegExp(" a (\\w*) ", Qt::CaseSensitive, QRegExp::RegExp2), ".as(\"\\1\") ");
         l.replace(QRegExp(" c "), ".count(true) ");
         l.replace(QRegExp(" p "), ".params(dgraph::orm::Params::builder{} ");
-        l.replace(QRegExp(" o "),
-                  ".order({{\"name\", \"value\"}, {\"name\", \"value\"}}) ");
-        l.replace(QRegExp(" a "),
-                  ".attributes({\"uid\", \"name\", \"email\"}) ");
+        l.replace(QRegExp(" o "), ".order({{\"name\", \"value\"}, {\"name\", \"value\"}}) ");
+        l.replace(QRegExp(" a "), ".attributes({\"uid\", \"name\", \"email\"}) ");
         l.replace(QRegExp(" f "), ".filter(dgraph::orm::Filter::builder{} ) ");
-        l.replace(QRegExp(" m (\\w*) ", Qt::CaseSensitive, QRegExp::RegExp2),
-                  ".model(\"\\1\") ");
+        l.replace(QRegExp(" m (\\w*) ", Qt::CaseSensitive, QRegExp::RegExp2), ".model(\"\\1\") ");
         l.replace(QRegExp(" b_"), ".build()\n");
         l.replace(QRegExp(" i_"), ")\n");
-
         // t == "A \\emph{bon mot}."
         r += "\n";
         r += l;
       }
       r += ".build_shared(), result);\n";
-
       auto json = R"(  rapidjson::Document document;
   document.Parse(result->json().c_str());
 
@@ -161,10 +131,8 @@ DgraphCodeGenerator::DgraphCodeGenerator(QWidget *parent) : QWidget(parent) {
   }}
   std::cout << result->json();
   return grpc::Status::OK;)";
-      r += QString::fromStdString(
-          fmt::format(json, schema->text().toStdString()));
-
-      resultText->setText(r);
+      /*r += QString::fromStdString(fmt::format(json, schema->text().toStdString()));
+      resultText->setText(r);*/
     };
     connect(schema, &QLineEdit::textChanged, generate);
     connect(methodselect, &QComboBox::currentTextChanged, generate);
@@ -174,7 +142,6 @@ DgraphCodeGenerator::DgraphCodeGenerator(QWidget *parent) : QWidget(parent) {
   {
     auto g = new QGroupBox(this);
     g->setTitle("insert Builder");
-
     auto h = new QHBoxLayout(g);
     auto v = new QVBoxLayout();
     // auto schemaLabel = new QLabel(this);
@@ -183,57 +150,36 @@ DgraphCodeGenerator::DgraphCodeGenerator(QWidget *parent) : QWidget(parent) {
     v->addWidget(schema);
     v->addWidget(inputtext);
     h->addItem(v);
-
     auto resultText = new QTextEdit(g);
     h->addWidget(resultText);
     h->setStretch(1, 2);
-
     v1->addWidget(g);
     auto generate = [schema, inputtext, resultText]() {
       auto t = inputtext->toPlainText();
       QString r;
-
-      r +=
-          "auto dgraphorm = dgraph::DGraphClientManger::getDGraphOrm(\"1\");\n";
-      r += "auto " + schema->text() + " = dgraphorm->newmodel(\"" +
-           schema->text() + "\");\n";
+      r += "auto dgraphorm = dgraph::DGraphClientManger::getDGraphOrm(\"1\");\n";
+      r += "auto " + schema->text() + " = dgraphorm->newmodel(\"" + schema->text() + "\");\n";
       r += "auto result = new api::Response;\n";
-      r += "auto status = " + schema->text() +
-           "->create(dgraph::orm::Attributes{}\n";
-      for (auto &l : t.split("\n")) {
+      r += "auto status = " + schema->text() + "->create(dgraph::orm::Attributes{}\n";
+      for (auto &l : t.split("\n"))
+      {
         // l.replace(" b ", ",FieldProps::builder{} ");
-
-        l.replace(
-            QRegExp(" s (\\w*) (\\w*) ", Qt::CaseSensitive, QRegExp::RegExp2),
-            ".s(\"\\1\", \"\\2\") ");
-        l.replace(
-            QRegExp(" i (\\w*) (\\w*) ", Qt::CaseSensitive, QRegExp::RegExp2),
-            ".i(\"\\1\", \\2) ");
-        l.replace(
-            QRegExp(" d (\\w*) (\\w*) ", Qt::CaseSensitive, QRegExp::RegExp2),
-            ".d(\"\\1\", \\2) ");
-        l.replace(
-            QRegExp(" b (\\w*) (\\w*) ", Qt::CaseSensitive, QRegExp::RegExp2),
-            ".b(\"\\1\", \\2) ");
-        l.replace(
-            QRegExp(" u (\\w*) (\\w*) ", Qt::CaseSensitive, QRegExp::RegExp2),
-            ".u(\"\\1\", \"\\2\") ");
-        l.replace(
-            QRegExp(" u1 (\\w*) (\\w*) ", Qt::CaseSensitive, QRegExp::RegExp2),
-            ".u(\"\\1\", {\\2}) ");
+        l.replace(QRegExp(" s (\\w*) (\\w*) ", Qt::CaseSensitive, QRegExp::RegExp2), ".s(\"\\1\", \"\\2\") ");
+        l.replace(QRegExp(" i (\\w*) (\\w*) ", Qt::CaseSensitive, QRegExp::RegExp2), ".i(\"\\1\", \\2) ");
+        l.replace(QRegExp(" d (\\w*) (\\w*) ", Qt::CaseSensitive, QRegExp::RegExp2), ".d(\"\\1\", \\2) ");
+        l.replace(QRegExp(" b (\\w*) (\\w*) ", Qt::CaseSensitive, QRegExp::RegExp2), ".b(\"\\1\", \\2) ");
+        l.replace(QRegExp(" u (\\w*) (\\w*) ", Qt::CaseSensitive, QRegExp::RegExp2), ".u(\"\\1\", \"\\2\") ");
+        l.replace(QRegExp(" u1 (\\w*) (\\w*) ", Qt::CaseSensitive, QRegExp::RegExp2), ".u(\"\\1\", {\\2}) ");
         // set methods
-        l.replace(QRegExp(" set (\\w*) ", Qt::CaseSensitive, QRegExp::RegExp2),
-                  schema->text() + ".set_\\1(obj[\"\\1\"] ");
+        l.replace(QRegExp(" set (\\w*) ", Qt::CaseSensitive, QRegExp::RegExp2), schema->text() + ".set_\\1(obj[\"\\1\"] ");
         l.replace(QRegExp(" 1 "), ".GetInt()); ");
         l.replace(QRegExp(" 2 "), ".GetFloat()); ");
         l.replace(QRegExp(" 3 "), ".GetString()); ");
         l.replace(QRegExp(" 4 "), ".GetBool()); ");
         l.replace(QRegExp(" e_"), ", result);");
-
         r += "\n";
         r += l;
       }
-
       r += "\n";
       auto swit = R"(switch (status) {
   case dgraph::orm::success: {
@@ -246,20 +192,16 @@ DgraphCodeGenerator::DgraphCodeGenerator(QWidget *parent) : QWidget(parent) {
   default:
     break;
 })";
-
-      r += QString::fromStdString(
-          pystring::replace(swit, "%1", schema->text().toStdString()));
+      r += QString::fromStdString(pystring::replace(swit, "%1", schema->text().toStdString()));
       r += "\ndelete response;\n";
       resultText->setText(r);
     };
     connect(inputtext, &QPlainTextEdit::textChanged, generate);
     connect(schema, &QLineEdit::textChanged, generate);
   }
-
   {
     auto g = new QGroupBox(this);
     g->setTitle("protobuf Builder");
-
     auto h = new QHBoxLayout(g);
     auto v = new QVBoxLayout();
     // auto schemaLabel = new QLabel(this);
@@ -268,17 +210,15 @@ DgraphCodeGenerator::DgraphCodeGenerator(QWidget *parent) : QWidget(parent) {
     v->addWidget(schema);
     v->addWidget(inputtext);
     h->addItem(v);
-
     auto resultText = new QTextEdit(g);
     h->addWidget(resultText);
     h->setStretch(1, 2);
-
     v1->addWidget(g);
     auto generate = [schema, inputtext, resultText]() {
       auto t = inputtext->toPlainText();
       QString r;
-
-      for (auto &l : t.split("\n")) {
+      for (auto &l : t.split("\n"))
+      {
         // clang-format off
         l.replace(QRegExp(" map (\\w*) (\\w*) ", Qt::CaseSensitive, QRegExp::RegExp2), "map<\\1, \\2> ");
         l.replace(QRegExp(" rpc (\\w*) (\\w*) (\\w*) ", Qt::CaseSensitive, QRegExp::RegExp2), "rpc \\1 (\\2) returns (\\3);");
@@ -293,7 +233,6 @@ DgraphCodeGenerator::DgraphCodeGenerator(QWidget *parent) : QWidget(parent) {
         l.replace(QRegExp(" s (\\w*) ", Qt::CaseSensitive, QRegExp::RegExp2), "service \\1 {");
         l.replace(QRegExp(" o (\\w*) ", Qt::CaseSensitive, QRegExp::RegExp2), "oneof \\1 {");
         // clang-format on
-
         l.replace(QRegExp(" 1 "), "bool ");
         l.replace(QRegExp(" 2 "), "string ");
         l.replace(QRegExp(" 3 "), "bytes ");
@@ -309,16 +248,13 @@ DgraphCodeGenerator::DgraphCodeGenerator(QWidget *parent) : QWidget(parent) {
         l.replace(QRegExp(" 13 "), "fixed64 ");
         l.replace(QRegExp(" 14 "), "sfixed32 ");
         l.replace(QRegExp(" 15 "), "sfixed64 ");
-
         l.replace(QRegExp(" e "), "enum ");
         l.replace(QRegExp(" r "), "repeated ");
         l.replace(QRegExp(" rt "), "returns ");
         l.replace(QRegExp(" a "), "google.protobuf.Any ");
-
         r += "\n";
         r += l;
       }
-
       r += "\n";
       resultText->setText(r);
     };
@@ -328,7 +264,6 @@ DgraphCodeGenerator::DgraphCodeGenerator(QWidget *parent) : QWidget(parent) {
   {
     auto g = new QGroupBox(this);
     g->setTitle("yup Builder");
-
     auto h = new QHBoxLayout(g);
     auto v = new QVBoxLayout();
     // auto schemaLabel = new QLabel(this);
@@ -337,17 +272,15 @@ DgraphCodeGenerator::DgraphCodeGenerator(QWidget *parent) : QWidget(parent) {
     v->addWidget(schema);
     v->addWidget(inputtext);
     h->addItem(v);
-
     auto resultText = new QTextEdit(g);
     h->addWidget(resultText);
     h->setStretch(1, 2);
-
     v1->addWidget(g);
     auto generate = [schema, inputtext, resultText]() {
       auto t = inputtext->toPlainText();
       QString r;
-
-      for (auto &l : t.split("\n")) {
+      for (auto &l : t.split("\n"))
+      {
         // clang-format off
         //l.replace(QRegExp(" map (\\w*) (\\w*) ", Qt::CaseSensitive, QRegExp::RegExp2), "map<\\1, \\2> ");
         //l.replace(QRegExp(" rpc (\\w*) (\\w*) (\\w*) ", Qt::CaseSensitive, QRegExp::RegExp2), "rpc \\1 (\\2) returns (\\3);");
@@ -376,7 +309,6 @@ DgraphCodeGenerator::DgraphCodeGenerator(QWidget *parent) : QWidget(parent) {
         //l.replace(QRegExp(" s (\\w*) ", Qt::CaseSensitive, QRegExp::RegExp2), "service \\1 {");
         //l.replace(QRegExp(" o (\\w*) ", Qt::CaseSensitive, QRegExp::RegExp2), "oneof \\1 {");
         // clang-format on
-
         l.replace(QRegExp(" 1 "), "bool ");
         l.replace(QRegExp(" 2 "), "string ");
         l.replace(QRegExp(" 3 "), "bytes ");
@@ -392,16 +324,13 @@ DgraphCodeGenerator::DgraphCodeGenerator(QWidget *parent) : QWidget(parent) {
         l.replace(QRegExp(" 13 "), "fixed64 ");
         l.replace(QRegExp(" 14 "), "sfixed32 ");
         l.replace(QRegExp(" 15 "), "sfixed64 ");
-
         l.replace(QRegExp(" e "), "enum ");
         l.replace(QRegExp(" r "), "repeated ");
         l.replace(QRegExp(" rt "), "returns ");
         l.replace(QRegExp(" a "), "google.protobuf.Any ");
-
         r += "\n";
         r += l;
       }
-
       r += "\n";
       resultText->setText(r);
     };
@@ -410,6 +339,5 @@ DgraphCodeGenerator::DgraphCodeGenerator(QWidget *parent) : QWidget(parent) {
   }
   this->setLayout(v1);
 }
-
 DgraphCodeGenerator::~DgraphCodeGenerator() {}
 }  // namespace widgets

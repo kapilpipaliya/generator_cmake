@@ -1,11 +1,9 @@
 #include "./mainwinhigh.h"
-
 #include <QMdiArea>
 #include <QMdiSubWindow>
 #include <QToolBar>
-
-#include "sqlite/orm.h"
-#include "sqlite_orm.h"
+//#include "sqlite/orm.h"
+//#include "sqlite_orm.h"
 #include "widgets/apihandler/apihandler.h"
 #include "widgets/bashhistoryviewer/initialfunctions.h"
 #include "widgets/bashhistoryviewer/window.h"
@@ -21,21 +19,20 @@
 #include "widgets/sqlcompare/sqlcompare.h"
 #include "widgets/stl/stl.h"
 #include "widgets/svelte/sveltegenerator.h"
+#include "widgets/react/reactgenerator.h"
 #include "widgets/syncroute/syncroute.h"
 #include "widgets/wstest/wstest.h"
 #include "widgets/yaml/yamlgenerator.h"
-MainWinHigh::MainWinHigh(QWidget *parent) : MainWindow(parent) {
+MainWinHigh::MainWinHigh(QWidget *parent) : MainWindow(parent)
+{
   setWindowTitle(tr("Generator Software"));
-
   //    M_DB dbConnection = M_DB(0);
   //    QPixmap p1 = dbConnection.getImage();
   // QPixmap p2 = p1.scaled(500, 500, Qt::KeepAspectRatio); // on constructor we
   // not have proper size of label.
   //    this->setWindowIcon(p1);
-
   auto newToolBar = new QToolBar(this);
   addToolBar(Qt::TopToolBarArea, newToolBar);
-
   auto bashrcconfigAction = new QAction("bashrc-config", this);
   newToolBar->addAction(bashrcconfigAction);
   connect(bashrcconfigAction, &QAction::triggered, [this]() {
@@ -43,7 +40,6 @@ MainWinHigh::MainWinHigh(QWidget *parent) : MainWindow(parent) {
     addMdiChild(child);
     child->show();
   });
-
   QString IV1, IV2, IV3, AppName;
   IV1 = "0";
   system(qPrintable("echo " + IV1 + " > /tmp/Scripter-Theme"));
@@ -60,7 +56,6 @@ MainWinHigh::MainWinHigh(QWidget *parent) : MainWindow(parent) {
     addMdiChild(child);
     child->show();
   });
-
   auto generatorAction = new QAction("generator", this);
   generatorAction->setShortcuts({QKeySequence(tr("Ctrl+G"))});
   newToolBar->addAction(generatorAction);
@@ -69,7 +64,6 @@ MainWinHigh::MainWinHigh(QWidget *parent) : MainWindow(parent) {
     addMdiChild(child);
     child->show();
   });
-
   auto bashhistoryviewerAction = new QAction("bash h viewer", this);
   newToolBar->addAction(bashhistoryviewerAction);
   connect(bashhistoryviewerAction, &QAction::triggered, [this]() {
@@ -84,7 +78,6 @@ MainWinHigh::MainWinHigh(QWidget *parent) : MainWindow(parent) {
     addMdiChild(child);
     child->show();
   });
-
   auto yamlAction = new QAction("Yaml", this);
   newToolBar->addAction(yamlAction);
   connect(yamlAction, &QAction::triggered, [this]() {
@@ -96,6 +89,13 @@ MainWinHigh::MainWinHigh(QWidget *parent) : MainWindow(parent) {
   newToolBar->addAction(svelteAction);
   connect(svelteAction, &QAction::triggered, [this]() {
     auto child = new widgets::SvelteGenerator();
+    addMdiChild(child);
+    child->show();
+  });
+  auto reactAction = new QAction("react", this);
+  newToolBar->addAction(reactAction);
+  connect(reactAction, &QAction::triggered, [this]() {
+    auto child = new widgets::ReactGenerator();
     addMdiChild(child);
     child->show();
   });
@@ -113,7 +113,6 @@ MainWinHigh::MainWinHigh(QWidget *parent) : MainWindow(parent) {
     addMdiChild(child);
     child->show();
   });
-
   auto sqlcompareAction = new QAction("sqlcompare", this);
   newToolBar->addAction(sqlcompareAction);
   connect(sqlcompareAction, &QAction::triggered, [this]() {
@@ -163,7 +162,6 @@ MainWinHigh::MainWinHigh(QWidget *parent) : MainWindow(parent) {
     addMdiChild(child);
     child->show();
   });
-
   auto queryBuilderAction = new QAction("query builder", this);
   newToolBar->addAction(queryBuilderAction);
   connect(queryBuilderAction, &QAction::triggered, [this]() {
@@ -171,42 +169,40 @@ MainWinHigh::MainWinHigh(QWidget *parent) : MainWindow(parent) {
     addMdiChild(child);
     child->show();
   });
-
   Orm m;
 }
-
-void MainWinHigh::adminLoggedIn() {
+void MainWinHigh::adminLoggedIn()
+{
   this->show();
   configToolBar = new QToolBar(tr("config"), this);
   addToolBar(Qt::LeftToolBarArea, configToolBar);
   // fileToolBar->addAction(configAct);
 }
-
 void MainWinHigh::userLoggedIn() { this->show(); }
-
-void MainWinHigh::showConfigDialog() {
+void MainWinHigh::showConfigDialog()
+{
   //  confDialog = new ConfDialog(this);
   //  confDialog->show();
 }
-
-QWidget *MainWinHigh::createMdiChild() {
+QWidget *MainWinHigh::createMdiChild()
+{
   auto child = new widgets::ModelWriter(this);
   QMdiSubWindow *subWindow = mdiArea->addSubWindow(child);
   subWindow->setWindowIcon(QIcon(":/images/copy.png"));
   subWindow->resize(1100, 800);
   return child;
 }
-void MainWinHigh::addMdiChild(QWidget *child) {
+void MainWinHigh::addMdiChild(QWidget *child)
+{
   QMdiSubWindow *subWindow = mdiArea->addSubWindow(child);
   subWindow->setWindowIcon(QIcon(":/images/copy.png"));
   subWindow->resize(1100, 800);
 }
-
-void MainWinHigh::newFile() {
+void MainWinHigh::newFile()
+{
   QWidget *child = createMdiChild();
   child->show();
 }
-
 /*
 void MainWinHigh::open()
 {
@@ -228,7 +224,8 @@ void MainWinHigh::open()
     }
 }
 */
-void MainWinHigh::save() {
+void MainWinHigh::save()
+{
   //  if (activeMdiChild() && activeMdiChild()->save())
   //    statusBar()->showMessage(tr("File saved"), 2000);
 }

@@ -1,53 +1,45 @@
 #include "./syncroute.h"
-
 #include <unistd.h>
-
-#include <boost/algorithm/string.hpp>
-#include <boost/filesystem.hpp>
+//#include <boost/algorithm/string.hpp>
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <regex>
 #include <string>
-
-#include "thirdparty/pystring/pystring.h"
-
-namespace widgets {
-
-SyncRoute::SyncRoute(QWidget *parent) : QWidget(parent) {
+#include "pystring/pystring.hpp"
+namespace widgets
+{
+SyncRoute::SyncRoute(QWidget *parent) : QWidget(parent)
+{
   routesFilePath = "/home/kapili3/jdragon/model_instructions/routes.txt";
-
   init();
   initTextEdit();
 }
-
-void SyncRoute::init() {
+void SyncRoute::init()
+{
   auto v1 = new QVBoxLayout(this);
-
   auto buttons_h = new QHBoxLayout();
   auto syncnowButton = new QToolButton(this);
   syncnowButton->setText("sync now!");
   buttons_h->addWidget(syncnowButton);
-
   resultText = new QTextEdit(this);
-
   v1->addItem(buttons_h);
   v1->addWidget(resultText);
-
   connect(syncnowButton, &QToolButton::clicked, this, &SyncRoute::sync);
 }
-
-void SyncRoute::initTextEdit() {
+void SyncRoute::initTextEdit()
+{
   auto content1 = QString::fromStdString(read_all(routesFilePath));
   resultText->setText(content1);
 }
-
-void SyncRoute::sync() {
+void SyncRoute::sync()
+{
   // write c++ and js route file
-
   // save
   {
     std::ofstream oRouteFile(routesFilePath, std::ofstream::out);
-    if (!oRouteFile) {
+    if (!oRouteFile)
+    {
       perror("");
       exit(1);
     }
@@ -57,7 +49,8 @@ void SyncRoute::sync() {
   {
     auto cppEnumFilePath = "/home/kapili3/jdragon/actor/timeroutes.h";
     std::ofstream oRouteFile(cppEnumFilePath, std::ofstream::out);
-    if (!oRouteFile) {
+    if (!oRouteFile)
+    {
       perror("");
       exit(1);
     }
@@ -67,13 +60,11 @@ namespace superactor {
 namespace todoactor {
 enum all_services { )";
     oRouteFile << a << "\n";
-
     auto stringlist = resultText->toPlainText().split("\n");
     std::vector<std::string> list;
-    for (auto &s : stringlist) {
-      if (!s.trimmed().isEmpty()) {
-        list.push_back(s.toStdString());
-      }
+    for (auto &s : stringlist)
+    {
+      if (!s.trimmed().isEmpty()) { list.push_back(s.toStdString()); }
     }
     oRouteFile << pystring::join(",\n", list);
     auto b = R"(};
@@ -90,17 +81,17 @@ enum all_services { )";
         "event.ts";
     {
       std::ofstream oRouteFile(jsEnumFilePath, std::ofstream::out);
-      if (!oRouteFile) {
+      if (!oRouteFile)
+      {
         perror("");
         exit(1);
       }
       oRouteFile << "export enum event {\n";
       auto stringlist = resultText->toPlainText().split("\n");
       std::vector<std::string> list;
-      for (auto &s : stringlist) {
-        if (!s.trimmed().isEmpty()) {
-          list.push_back(s.toStdString());
-        }
+      for (auto &s : stringlist)
+      {
+        if (!s.trimmed().isEmpty()) { list.push_back(s.toStdString()); }
       }
       oRouteFile << pystring::join(",\n", list);
       oRouteFile << "\n"
@@ -108,11 +99,9 @@ enum all_services { )";
     }
     // run tsc compiler:
     {
-      auto command =
-          "cd /home/kapili3/k/svelte/sapper/time_management && yarn event";
+      auto command = "cd /home/kapili3/k/svelte/sapper/time_management && yarn event";
       system(command);
     }
   }
 }
-
 }  // namespace widgets

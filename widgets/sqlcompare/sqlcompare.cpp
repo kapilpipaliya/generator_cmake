@@ -1,16 +1,16 @@
 #include "./sqlcompare.h"
-#include <drogon/orm/DbClient.h>
+//#include <drogon/orm/DbClient.h>
 #include <QSortFilterProxyModel>
 #include <QtDebug>
 #include <QtSql>
 #include "../modelwriter/data.h"
 #include "sqlite/orm.h"
-namespace widgets {
-SqlCompare::SqlCompare(QWidget* parent)
-    : QWidget(parent), ui(new Ui::SqlCompare) {
+namespace widgets
+{
+SqlCompare::SqlCompare(QWidget* parent) : QWidget(parent), ui(new Ui::SqlCompare)
+{
   ui->setupUi(this);
   this->setAttribute(Qt::WA_DeleteOnClose);
-
   db1 = ui->lineEdit_db1;
   db2 = ui->lineEdit_db2;
   table = ui->lineEdit_table;
@@ -24,14 +24,11 @@ SqlCompare::SqlCompare(QWidget* parent)
   where = ui->lineEdit_where;
   result1 = ui->textEdit_1;
   result2 = ui->textEdit_2;
-
   loadAll();
-
   sourceModel = new Data(this);
   proxyModel = new QSortFilterProxyModel(this);
   proxyModel->setSourceModel(sourceModel);
   ui->treeView->setModel(proxyModel);
-
   ui->treeView->resizeColumnToContents(0);
   /*
   connect(ui->toolButton_filter_clear, &QToolButton::clicked, [this]() {
@@ -52,26 +49,30 @@ SqlCompare::SqlCompare(QWidget* parent)
   connect(ui->toolButton_c, &QToolButton::pressed, [this]() {
     auto db = QSqlDatabase::database("client1");
     QSqlDatabase client1;
-    if (db.isValid()) {
-      client1 = db;
-    } else {
+    if (db.isValid()) { client1 = db; }
+    else
+    {
       client1 = QSqlDatabase::addDatabase("QPSQL", "client1");
     }
     client1.setDatabaseName(db1->text());
     client1.setHostName("localhost");
     client1.setPort(5432);
-    if (!client1.open("postgres", "postgres")) {
+    if (!client1.open("postgres", "postgres"))
+    {
       qDebug() << "unsuccess:" << client1.lastError();
       client1 = QSqlDatabase();
       QSqlDatabase::removeDatabase(QString("client1"));
       qDebug() << "unsuc: " << client1.lastError();
-    } else {
+    }
+    else
+    {
       auto record = client1.driver()->record(ui->lineEdit_table->text());
       auto c = record.count();
       auto r_column = ui->lineEdit_result_columns;
       r_column->clear();
       QString s;
-      for (int i = 0; i < c; ++i) {
+      for (int i = 0; i < c; ++i)
+      {
         auto f = record.field(i);
         s += f.name();
         s += ", ";
@@ -96,11 +97,8 @@ SqlCompare::SqlCompare(QWidget* parent)
   });
   connect(match, &QToolButton::clicked, [this]() { matchresult(); });
   connect(count, &QToolButton::clicked, [this]() { getcount(); });
-  connect(ui->toolButton_save, &QToolButton::clicked, this,
-          &SqlCompare::saveAll);
-  connect(ui->toolButton_load, &QToolButton::clicked, this,
-          &SqlCompare::loadAll);
-
+  connect(ui->toolButton_save, &QToolButton::clicked, this, &SqlCompare::saveAll);
+  connect(ui->toolButton_load, &QToolButton::clicked, this, &SqlCompare::loadAll);
   connect(ui->toolButton_filter_clear, &QToolButton::clicked, [this]() {
     // Set the string you want to filter on using setFilterFixedString()
     // or setFilterRegExp() in your QSortFilterProxyModel
@@ -108,17 +106,16 @@ SqlCompare::SqlCompare(QWidget* parent)
     ui->lineEdit_filter->setText("");
   });
   connect(ui->toolButton_all, &QToolButton::clicked, [this]() {
-    for (int i = 0; i < proxyModel->rowCount(); ++i) {
+    for (int i = 0; i < proxyModel->rowCount(); ++i)
+    {
       // on_treeView_doubleClicked(proxyModel->index(i, 0));
     }
   });
-  connect(ui->lineEdit_filter, &QLineEdit::textChanged,
-          [this](const QString& arg1) { proxyModel->setFilterRegExp(arg1); });
+  connect(ui->lineEdit_filter, &QLineEdit::textChanged, [this](const QString& arg1) { proxyModel->setFilterRegExp(arg1); });
 }
-
 SqlCompare::~SqlCompare() { delete ui; }
-
-void SqlCompare::loadAll() {
+void SqlCompare::loadAll()
+{
   db1->setText(load("db1", db1->text()));
   db2->setText(load("db2", db2->text()));
   table->setText(load("table", table->text()));
@@ -126,8 +123,8 @@ void SqlCompare::loadAll() {
   order_by->setText(load("order_by", order_by->text()));
   where->setText(load("where", where->text()));
 }
-
-void SqlCompare::saveAll() {
+void SqlCompare::saveAll()
+{
   set("db1", db1->text());
   set("db2", db2->text());
   set("table", table->text());
@@ -135,70 +132,65 @@ void SqlCompare::saveAll() {
   set("order_by", order_by->text());
   set("where", where->text());
 }
-
-QString SqlCompare::load(QString key, QString default_value) {
+QString SqlCompare::load(QString key, QString default_value)
+{
   auto value = get(key);
-  if (value.isEmpty()) {
+  if (value.isEmpty())
+  {
     set(key, default_value);
     return default_value;
-  } else {
+  }
+  else
+  {
     return value;
   }
 }
-
-void SqlCompare::set(QString key, QString value) {
-  Orm::sqlCompareSaveSetting(key.toStdString(), value.toStdString());
-}
-
-QString SqlCompare::get(QString key) {
-  return QString::fromStdString(Orm::sqlCompareGetValue(key.toStdString()));
-}
-
-QString SqlCompare::getSql1() {
-  return "SELECT " + columns->text() + " FROM " + table->text() + " " +
-         where->text() + " " + order_by->text();
-}
-
-QString SqlCompare::getSql2() {
-  return "SELECT " + columns->text() + " FROM " + table->text() + " " +
-         where->text() + " " + order_by->text();
-}
-
-void SqlCompare::getresult(QString database, QString strSql,
-                           QTextEdit* result) {
+void SqlCompare::set(QString key, QString value) { Orm::sqlCompareSaveSetting(key.toStdString(), value.toStdString()); }
+QString SqlCompare::get(QString key) { return QString::fromStdString(Orm::sqlCompareGetValue(key.toStdString())); }
+QString SqlCompare::getSql1() { return "SELECT " + columns->text() + " FROM " + table->text() + " " + where->text() + " " + order_by->text(); }
+QString SqlCompare::getSql2() { return "SELECT " + columns->text() + " FROM " + table->text() + " " + where->text() + " " + order_by->text(); }
+void SqlCompare::getresult(QString database, QString strSql, QTextEdit* result)
+{
   auto db = QSqlDatabase::database("client1");
   QSqlDatabase client1;
-  if (db.isValid()) {
-    client1 = db;
-  } else {
+  if (db.isValid()) { client1 = db; }
+  else
+  {
     client1 = QSqlDatabase::addDatabase("QPSQL", "client1");
   }
   client1.setDatabaseName(database);
   client1.setHostName("localhost");
   client1.setPort(5432);
-  if (!client1.open("postgres", "postgres")) {
+  if (!client1.open("postgres", "postgres"))
+  {
     qDebug() << "unsuccess:" << client1.lastError();
     client1 = QSqlDatabase();
     QSqlDatabase::removeDatabase(QString("client1"));
     qDebug() << "unsuc: " << client1.lastError();
-  } else {
+  }
+  else
+  {
     auto record = client1.driver()->record(ui->lineEdit_table->text());
     auto c = record.count();
     auto r_column = ui->lineEdit_result_columns;
     r_column->clear();
     QString s;
-    for (int i = 0; i < c; ++i) {
+    for (int i = 0; i < c; ++i)
+    {
       auto f = record.field(i);
       s += f.name();
       s += ", ";
     }
     QSqlQuery query("", client1);  // executes query
     query.prepare(strSql);
-    if (query.exec()) {
+    if (query.exec())
+    {
       r_column->setText(s);
-      while (query.next()) {
+      while (query.next())
+      {
         auto count = query.record().count();
-        for (int i = 0; i < count; ++i) {
+        for (int i = 0; i < count; ++i)
+        {
           auto text = result->toPlainText();
           text += query.value(i).toString();
           text += ", ";
@@ -208,21 +200,23 @@ void SqlCompare::getresult(QString database, QString strSql,
         text += "\n";
         result->setText(text);
       }
-    } else {
+    }
+    else
+    {
       qDebug() << query.lastError() << ": " << query.lastQuery();
     }
   }
 }
-
-void SqlCompare::matchresult() {
-  if (result1->toPlainText() == result2->toPlainText()) {
-    ui->label_5->setText("Matched");
-  } else {
+void SqlCompare::matchresult()
+{
+  if (result1->toPlainText() == result2->toPlainText()) { ui->label_5->setText("Matched"); }
+  else
+  {
     ui->label_5->setText("Not Matched");
   }
 }
-
-void SqlCompare::getcount() {
+void SqlCompare::getcount()
+{
   result1->clear();
   result2->clear();
   auto count = R"(

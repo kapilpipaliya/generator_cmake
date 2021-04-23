@@ -27,20 +27,23 @@ class Window : public QWidget
     Q_OBJECT
 
 public:
-    explicit Window(QWidget *parent = 0);
+    explicit Window(QWidget *parent = nullptr);
     ~Window();
     BashrcSource getSource();
     void setSource(const BashrcSource data);
     void closeEvent(QCloseEvent *event);
     void writePositionSettings();
     void readPositionSettings();
+private slots:
+    void on_pushButton_Help_clicked();
+
 private:
     //NOTE TabManager does garbage collection on any members added
     class TabManager : public QObject
     {
     public:
         //PRIORITY LOW
-        //TODO implement copy and move contructors
+        //TODO implement copy and move constructors
         TabManager(Ui::Window* ui);
         TabManager& addTabs(QList<Tab*> tabs);
         TabManager& addTab(Tab* tab);

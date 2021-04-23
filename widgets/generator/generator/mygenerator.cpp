@@ -5,7 +5,7 @@
 #include <iostream>
 #include <regex>
 
-#include "thirdparty/pystring/pystring.h"
+#include "pystring/pystring.hpp"
 MyGenerator::MyGenerator() {
   cppTimePath = "/home/kapili3/jdragon/service/time/";
   cppServicePath = "/home/kapili3/jdragon/service";
